@@ -1,18 +1,18 @@
 { pkgs }:
 
 let
-  inherit (upstream) buildPythonPackage fetchPypi;
+  inherit (upstream) buildPythonApplication buildPythonPackage fetchPypi;
 
   upstream = pkgs.python311Packages;
   poetry = upstream.poetry-core;
 
-  pythonPackage =
+  pythonThing = builder:
     { pname
     , version
     , sha256
     , format ? "setuptools"
     , propagatedBuildInputs ? [ ]
-    }: pkgs.lib.makeOverridable buildPythonPackage rec {
+    }: pkgs.lib.makeOverridable builder rec {
       inherit
         format
         pname
@@ -29,9 +29,12 @@ let
       doCheck = false;
     };
 
+  pythonPackage = pythonThing buildPythonPackage;
+  pythonApplication = pythonThing buildPythonApplication;
+
 in
 rec {
-  cloudscale-cli = pythonPackage {
+  cloudscale-cli = pythonApplication {
     pname = "cloudscale-cli";
     version = "1.4.0";
     sha256 = "sha256-YfdiyUZmBOXwPtOeT7JoZMt3X37oIf36a+TIPvGJV/U=";
