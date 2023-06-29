@@ -1,0 +1,12 @@
+on:
+  push:
+
+jobs:
+  lints:
+    name: Lints
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: DeterminateSystems/nix-installer-action@v4
+      - name: run `nix flake check`
+        run: nix flake check
