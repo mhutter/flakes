@@ -18,9 +18,6 @@
           inherit (python-packages)
             cloudscale-cli
             cloudscale-sdk
-            kadet
-            kapitan
-            syn-commodore
             ;
         };
       }
