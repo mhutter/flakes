@@ -10,11 +10,17 @@
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
+
+        go-packages = import ./pkg/go-packages.nix { inherit pkgs; };
         python-packages = import ./pkg/python-packages.nix { inherit pkgs; };
 
       in
       {
         packages = {
+          inherit (go-packages)
+            flyctl
+            ;
+
           inherit (python-packages)
             cloudscale-cli
             cloudscale-sdk
